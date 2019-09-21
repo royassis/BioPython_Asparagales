@@ -1,10 +1,13 @@
 import numpy as np
 from Bio import SeqIO
 from sklearn.model_selection import cross_val_score
-from sklearn.decomposition import PCA
 from datetime import datetime as  dt
 from os import listdir, remove
 from os.path import isfile, join, getctime
+from sklearn.decomposition import TruncatedSVD
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.svm import SVC
 
 def getKmers(sequence, size):
     return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
@@ -31,23 +34,22 @@ def genebank_to_numpyarr(path):
     return np_arr
 
 def timer(func):
-   def func_wrapper(i,X,y,clf):
+   def func_wrapper(X,y,i):
        t1 = dt.now()
-       scores =  func(i,X,y,clf)
+       scores =  func(X,y,i)
        t2 = dt.now()
        delta = (t2 - t1).seconds
        return delta, scores
    return func_wrapper
 
 @timer
-def main_func(i,X,y,clf):
-    pca = PCA(n_components=i)
-    X_copy = pca.fit_transform(X)
-    scores = cross_val_score(clf, X_copy, y, cv=5).mean()
+def model(X, y,i):
+    clf = SVC(gamma='auto')
+    cv =CountVectorizer()
+    pca = TruncatedSVD(n_components=i)
+    model_transformation = Pipeline([('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
+    scores = cross_val_score(model_transformation, X, y, cv=5).mean()
     return scores
-
-
-
 
 
 def write_to_file(out_path, array):
@@ -79,4 +81,6 @@ def smart_write(log_folder,outfile , array):
     check_and_remove_files(file_list, log_folder)
     out_path =get_path(log_folder,outfile)
     write_to_file(out_path, array)
+
+
 
