@@ -44,7 +44,7 @@ def check_and_remove_files(file_list, log_folder):
         remove(path)
 
 def get_path(log_folder,outfile):
-    time = dt.now().strftime("%d/%m/%Y_%H:%M:%S")
+    time = dt.now().strftime("%d_%m_%Y__%H_%M_%S")
     out_path = log_folder + "/" +outfile+ "_"+time
     return out_path
 
