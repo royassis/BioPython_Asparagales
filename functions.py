@@ -30,6 +30,26 @@ def genebank_to_numpyarr(path):
     np_arr = np.asarray(l,dtype='U')
     return np_arr
 
+def timer(func):
+   def func_wrapper(i,X,y,clf):
+       t1 = dt.now()
+       scores =  func(i,X,y,clf)
+       t2 = dt.now()
+       delta = (t2 - t1).seconds
+       return delta, scores
+   return func_wrapper
+
+@timer
+def main_func(i,X,y,clf):
+    pca = PCA(n_components=i)
+    X_copy = pca.fit_transform(X)
+    scores = cross_val_score(clf, X_copy, y, cv=5).mean()
+    return scores
+
+
+
+
+
 def write_to_file(out_path, array):
     with open(out_path, 'w') as f:
         f.write("n_components, mean_score, delta_time \n")
@@ -60,18 +80,3 @@ def smart_write(log_folder,outfile , array):
     out_path =get_path(log_folder,outfile)
     write_to_file(out_path, array)
 
-def timer(func):
-   def func_wrapper(i,X,y,clf):
-       t1 = dt.now()
-       scores =  func(i,X,y,clf)
-       t2 = dt.now()
-       delta = (t2 - t1).seconds
-       return delta, scores
-   return func_wrapper
-
-@timer
-def main_func(i,X,y,clf):
-    pca = PCA(n_components=i)
-    X_copy = pca.fit_transform(X)
-    scores = cross_val_score(clf, X_copy, y, cv=5).mean()
-    return scores
