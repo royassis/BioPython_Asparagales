@@ -26,4 +26,4 @@ for i in range (n,m):
     print(i)
 
 
-write_to_file(out_path, delta_scores_i)
+smart_write(log_folder,outfile, delta_scores_i)
