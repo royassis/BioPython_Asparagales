@@ -11,12 +11,37 @@ from sklearn.decomposition import PCA
 
 from sklearn.svm import SVC
 
+
+
+
 def getKmers(sequence, size):
     return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
 def make_sentence(mySeq,word_size):
     words = getKmers(mySeq, size=word_size)
     sentence = ' '.join(words)
     return sentence
+
+def looping_through(records):
+    arr = []
+    for record in records:
+        str = record.seq._data
+        sentence = make_sentence(str, 6)
+        label = record.annotations["taxonomy"][-5]
+        arr.append([sentence, label])
+    return arr
+    ...
+
+def seq_to_arr(path):
+    type = path.split(".")[1]
+    if type == "fasta":
+        attributes = ["id"]
+    if type == "gb":
+        ...
+
+    records = SeqIO.parse(path, type)
+    arr = looping_through(records)
+
+    return arr
 
 
 path = "seq/Asparagales.gb"
