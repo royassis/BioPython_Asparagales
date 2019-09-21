@@ -8,6 +8,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
 
 def getKmers(sequence, size):
     return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
