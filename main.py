@@ -17,29 +17,27 @@ def make_sentence(mySeq,word_size):
     sentence = ' '.join(words)
     return sentence
 
-
-def looping_through(records,arguments, type):
-    arr = []
+def looping_through(records):
+    arr = np.array([])
     for record in records:
         str = record.seq._data
         sentence = make_sentence(str, 6)
-        if type =="gb":
-            label = getattr(record,arguments[0])[arguments[1]][arguments[2]]
-        if type == "fasta":
-            label = getattr(record, arguments[0])
-        arr.append([sentence, label])
+        label = record.annotations["taxonomy"]
+        label.insert(0,sentence)
+        tmp_arr =  np.array(label)
+        arr = np.append(arr, tmp_arr)
     return arr
 
-def seq_to_arr(path,attributes):
+def seq_to_arr(path):
     type = path.split(".")[1]
     records = SeqIO.parse(path, type)
-    arr = looping_through(records,attributes,type)
+    arr = looping_through(records)
 
-    return arr
+    return arr.reshape(1,-1)
 
 path = "seq/Asparagales.gb"
-arr = seq_to_arr(path,["annotations","taxonomy",-5])
-arr = np.array(arr)
+arr = seq_to_arr(path)
+
 
 #X
 cv = CountVectorizer()
