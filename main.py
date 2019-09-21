@@ -25,5 +25,5 @@ for i in range (n,m):
     delta_scores_i.append([i, delta, scores])
     print(i)
 
-out_path = log_folder+"/"+outfile
+
 write_to_file(out_path, delta_scores_i)

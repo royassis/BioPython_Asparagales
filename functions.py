@@ -3,7 +3,8 @@ from Bio import SeqIO
 from sklearn.model_selection import cross_val_score
 from sklearn.decomposition import PCA
 from datetime import datetime as  dt
-
+from os import listdir, remove
+from os.path import isfile, join, getctime
 
 def getKmers(sequence, size):
     return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
@@ -29,12 +30,35 @@ def genebank_to_numpyarr(path):
     np_arr = np.asarray(l,dtype='U')
     return np_arr
 
-def write_to_file(file_name, array):
-    with open(file_name, 'w') as f:
+def write_to_file(out_path, array):
+    with open(out_path, 'w') as f:
         f.write("n_components, mean_score, delta_time \n")
         for i in array:
             i =[str(j) for j in i]
             f.write(",".join(i) + "\n")
+
+def check_and_remove_files(file_list, log_folder):
+    file_list.sort(key=lambda x: x[0])
+    if file_list.__len__() > 5:
+        path = log_folder+"/"+file_list[0][1]
+        remove(path)
+
+def get_path(log_folder,outfile):
+    time = dt.now().strftime("%d/%m/%Y_%H:%M:%S")
+    out_path = log_folder + "/" +outfile+ "_"+time
+    return out_path
+
+def get_file_list(log_folder):
+    file_list= [[getctime(join(log_folder, f)),
+          f]
+         for f in listdir(log_folder) if isfile(join(log_folder, f))]
+    return file_list
+
+def smart_write(log_folder,outfile , array):
+    file_list = get_file_list(log_folder)
+    check_and_remove_files(file_list, log_folder)
+    out_path =get_path(log_folder,outfile)
+    write_to_file(out_path, array)
 
 def timer(func):
    def func_wrapper(i,X,y,clf):
