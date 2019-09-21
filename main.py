@@ -18,42 +18,27 @@ def make_sentence(mySeq,word_size):
     return sentence
 
 
-
-def looping_through(records,attributes):
+def looping_through(records,arguments, type):
     arr = []
     for record in records:
         str = record.seq._data
         sentence = make_sentence(str, 6)
-        label = record.annotations["taxonomy"][-5]
+        if type =="gb":
+            label = getattr(record,arguments[0])[arguments[1]][arguments[2]]
+        if type == "fasta":
+            label = getattr(record, arguments[0])
         arr.append([sentence, label])
     return arr
 
-def seq_to_arr(path):
+def seq_to_arr(path,attributes):
     type = path.split(".")[1]
-    if type == "fasta":
-        attributes = ...
-    if type == "gb":
-        attributes = ...
-
     records = SeqIO.parse(path, type)
-    arr = looping_through(records,attributes)
+    arr = looping_through(records,attributes,type)
 
     return arr
 
-
-
-
-
-
 path = "seq/Asparagales.gb"
-type = path.split(".")[1]
-arr=[]
-for record in SeqIO.parse(path,type):
-    str = record.seq._data
-    sentence=make_sentence(str,6)
-    label = record.annotations["taxonomy"][-5]
-    arr.append([sentence,label])
-
+arr = seq_to_arr(path,["annotations","taxonomy",-5])
 arr = np.array(arr)
 
 #X
