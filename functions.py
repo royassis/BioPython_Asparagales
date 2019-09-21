@@ -85,3 +85,21 @@ def smart_write(log_folder,outfile , array):
 
 
 
+
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class Transformer(BaseEstimator, TransformerMixin):
+    """An example of classifier"""
+
+    def __init__(self, k_mer=6):
+        self.k_mer = k_mer
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X= [make_sentence(i[0], self.k_mer) for i in X]
+        return X
+
+
+

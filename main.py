@@ -26,20 +26,17 @@ y = le.fit_transform(tokens_labels[:, 1])
 clf = SVC(gamma='auto')
 cv = CountVectorizer()
 pca = TruncatedSVD(n_components=2)
-model_transformation = Pipeline([('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
-parameters = {"pca__n_components": [1, 10]}
-model_transformation = GridSearchCV(model_transformation, parameters, cv=5)
+
+trans = Transformer()
+model_transformation = Pipeline([("trans",trans),('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
+parameters = {"pca__n_components": [i for i in range(1,100,10)]}
+model_transformation = GridSearchCV(model_transformation, parameters, cv=5, verbose=2)
 model_transformation.fit(X, y)
+
+print(model_transformation.cv_results_)
 
 #Model persistance
 pickle.dump(model_transformation, open( 'model_transformation.joblib', "wb" ))
 
 
-"""
-delta_scores_i=[]
-for i in range (n,m):
-    delta, scores = model(X, y,i)
-    delta_scores_i.append([i, delta, scores])
-    print(i)
-"""
 
