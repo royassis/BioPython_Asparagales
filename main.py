@@ -10,10 +10,6 @@ from sklearn.model_selection import cross_val_score
 from sklearn.decomposition import PCA
 
 from sklearn.svm import SVC
-
-
-
-
 def getKmers(sequence, size):
     return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
 def make_sentence(mySeq,word_size):
@@ -21,7 +17,9 @@ def make_sentence(mySeq,word_size):
     sentence = ' '.join(words)
     return sentence
 
-def looping_through(records):
+
+
+def looping_through(records,attributes):
     arr = []
     for record in records:
         str = record.seq._data
@@ -29,19 +27,22 @@ def looping_through(records):
         label = record.annotations["taxonomy"][-5]
         arr.append([sentence, label])
     return arr
-    ...
 
 def seq_to_arr(path):
     type = path.split(".")[1]
     if type == "fasta":
-        attributes = ["id"]
+        attributes = ...
     if type == "gb":
-        ...
+        attributes = ...
 
     records = SeqIO.parse(path, type)
-    arr = looping_through(records)
+    arr = looping_through(records,attributes)
 
     return arr
+
+
+
+
 
 
 path = "seq/Asparagales.gb"
