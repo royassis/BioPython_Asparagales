@@ -1,7 +1,4 @@
-from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
-from sklearn.pipeline import Pipeline
-from sklearn.svm import SVC
 from functions import *
 from sklearn.model_selection import GridSearchCV
 import pickle
@@ -27,8 +24,7 @@ clf = SVC(gamma='auto')
 cv = CountVectorizer()
 pca = TruncatedSVD(n_components=2)
 
-trans = Transformer()
-model_transformation = Pipeline([("trans",trans),('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
+model_transformation = Pipeline([('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
 parameters = {"pca__n_components": [i for i in range(1,100,10)]}
 model_transformation = GridSearchCV(model_transformation, parameters, cv=5, verbose=2)
 model_transformation.fit(X, y)
