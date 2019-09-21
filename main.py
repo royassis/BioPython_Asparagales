@@ -4,6 +4,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import SVC
 from functions import *
 from sklearn.model_selection import GridSearchCV
+import pickle
 
 
 #input params
@@ -26,12 +27,12 @@ clf = SVC(gamma='auto')
 cv = CountVectorizer()
 pca = TruncatedSVD(n_components=2)
 model_transformation = Pipeline([('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
-
 parameters = {"pca__n_components": [1, 10]}
-
 model_transformation = GridSearchCV(model_transformation, parameters, cv=5)
-
 model_transformation.fit(X, y)
+
+#Model persistance
+pickle.dump(model_transformation, open( 'model_transformation.joblib', "wb" ))
 
 
 """
