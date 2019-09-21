@@ -1,16 +1,8 @@
 import numpy as np
-
 from Bio import SeqIO
-
-
 from sklearn.model_selection import cross_val_score
-
 from sklearn.decomposition import PCA
-
-
 from datetime import datetime as  dt
-
-
 
 
 def getKmers(sequence, size):

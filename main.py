@@ -3,24 +3,25 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 from functions import *
 
+#input params
+infile = "seq/Asparagales.gb"
+outfile = "svn.txt"
+n=1
+m=3
 
-path = "seq/Asparagales.gb"
-arr = genebank_to_numpyarr(path)
+tokens_labels = genebank_to_numpyarr(infile)
 
 #Xy
 cv = CountVectorizer()
-X = cv.fit_transform(arr[:,0]).toarray()
+X = cv.fit_transform(tokens_labels[:, 0]).toarray()
 le = LabelEncoder()
-y = le.fit_transform(arr[:, 1])
+y = le.fit_transform(tokens_labels[:, 1])
 clf = SVC(gamma='auto')
 
-
-n=1
-m=3
-arr2=[]
+delta_scores_i=[]
 for i in range (n,m):
     delta, scores = main_func(i,X,y,clf)
-    arr2.append([i,delta, scores])
+    delta_scores_i.append([i, delta, scores])
     print(i)
 
-write_to_file("svn.txt", arr2)
+write_to_file(outfile, delta_scores_i)
