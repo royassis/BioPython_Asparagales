@@ -31,7 +31,7 @@ def genebank_to_numpyarr(path):
 
 def write_to_file(file_name, array):
     with open(file_name, 'w') as f:
-        f.write("n_components, mean_score, time \n")
+        f.write("n_components, mean_score, delta_time \n")
         for i in array:
             i =[str(j) for j in i]
             f.write(",".join(i) + "\n")

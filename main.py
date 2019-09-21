@@ -6,6 +6,7 @@ from functions import *
 #input params
 infile = "seq/Asparagales.gb"
 outfile = "svn.txt"
+log_folder ="logs"
 n=1
 m=3
 
@@ -24,4 +25,5 @@ for i in range (n,m):
     delta_scores_i.append([i, delta, scores])
     print(i)
 
-write_to_file(outfile, delta_scores_i)
+out_path = log_folder+"/"+outfile
+write_to_file(out_path, delta_scores_i)
