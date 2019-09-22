@@ -8,8 +8,10 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
-from sklearn.model_selection import GridSearchCV
+from sklearn.base import BaseEstimator, TransformerMixin
 
+
+######NLP functions######
 def getKmers(sequence, size):
     return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
 
@@ -18,7 +20,8 @@ def make_sentence(mySeq,word_size):
     sentence = ' '.join(words)
     return sentence
 
-def records_to_list(records):
+######Initial work######
+def get_features(records):
     arr = []
     for record in records:
         str = record.seq._data
@@ -30,10 +33,13 @@ def records_to_list(records):
 def genebank_to_numpyarr(path):
     file_type = path.split(".")[1]
     records = SeqIO.parse(path, file_type)
-    l = records_to_list(records)
+    l = get_features(records)
     np_arr = np.asarray(l,dtype='U')
     return np_arr
 
+
+
+######Model######
 def timer(func):
    def func_wrapper(X,y,i):
        t1 = dt.now()
@@ -53,6 +59,8 @@ def model(X, y,i):
     return scores
 
 
+
+######Writing to file######
 def write_to_file(out_path, array):
     with open(out_path, 'w') as f:
         f.write("n_components, mean_score, delta_time \n")
@@ -84,10 +92,7 @@ def smart_write(log_folder,outfile , array):
     write_to_file(out_path, array)
 
 
-
-
-from sklearn.base import BaseEstimator, TransformerMixin
-
+######Classes######
 class Transformer(BaseEstimator, TransformerMixin):
     """An example of classifier"""
 
