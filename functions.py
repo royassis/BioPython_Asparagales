@@ -4,7 +4,7 @@ from sklearn.model_selection import cross_val_score
 from datetime import datetime as  dt
 from os import listdir, remove
 from os.path import isfile, join, getctime
-from sklearn.decomposition import TruncatedSVD
+from sklearn.decomposition import TruncatedSVD, KernelPCA
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC

@@ -31,7 +31,7 @@ model_transformation = Pipeline([("Transformer",T),
 
 parameters = {"pca__n_components": [i for i in range(1,100,50)]}
 
-model_transformation = GridSearchCV(model_transformation, parameters, cv=5, verbose=2)
+model_transformation = GridSearchCV(model_transformation, parameters, cv=5, verbose=2, n_jobs=-1)
 model_transformation.fit(X, y)
 
 print(model_transformation.cv_results_+"\n best_score: "+
