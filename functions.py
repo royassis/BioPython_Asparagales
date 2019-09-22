@@ -9,6 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.neural_network import MLPClassifier
 
 
 ######NLP functions######
