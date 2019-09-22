@@ -26,12 +26,13 @@ def make_sentence(mySeq,word_size):
 def process_function_taxonomy(record):
     str = record.seq._data
     sentence = make_sentence(str, 6)
-    taxo = record.annotations["taxonomy"][-5]
-    return [sentence, taxo]
+    label = record.annotations["taxonomy"][-5]
+    return [sentence, label]
 
 def process_function_return_string(record):
     str = record.seq._data
-    return str
+    label = record.annotations["taxonomy"][-5]
+    return [str,label]
 
 #Main iterations#
 def get_features(records,process_function):
@@ -114,7 +115,7 @@ class Transformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        X= [make_sentence(i[0], self.k_mer) for i in X]
+        X= [make_sentence(i, self.k_mer) for i in X]
         return X
 
 

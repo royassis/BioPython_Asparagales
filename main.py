@@ -23,8 +23,9 @@ y = le.fit_transform(data_array[:, 1])
 cv = CountVectorizer()
 pca = TruncatedSVD(n_components=2)
 clf = SVC(gamma='auto',probability=True)
+T = Transformer()
 
-model_transformation = Pipeline([('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
+model_transformation = Pipeline([("Transformer",T),('CountVectorizer', cv), ("pca", pca), ('svc', clf)])
 parameters = {"pca__n_components": [i for i in range(1,100,10)]}
 
 model_transformation = GridSearchCV(model_transformation, parameters, cv=5, verbose=2)
