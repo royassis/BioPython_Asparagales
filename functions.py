@@ -20,20 +20,31 @@ def make_sentence(mySeq,word_size):
     sentence = ' '.join(words)
     return sentence
 
+
 ######Initial work######
-def get_features(records):
+#Process functions#
+def process_function_taxonomy(record):
+    str = record.seq._data
+    sentence = make_sentence(str, 6)
+    taxo = record.annotations["taxonomy"][-5]
+    return [sentence, taxo]
+
+def process_function_return_string(record):
+    str = record.seq._data
+    return str
+
+#Main iterations#
+def get_features(records,process_function):
     arr = []
     for record in records:
-        str = record.seq._data
-        sentence = make_sentence(str, 6)
-        taxo = record.annotations["taxonomy"][-5]
-        arr.append([sentence,taxo])
+        tmp_arr = process_function(record)
+        arr.append(tmp_arr)
     return arr
 
-def genebank_to_numpyarr(path):
+def genebank_to_numpyarr(path,process_function):
     file_type = path.split(".")[1]
     records = SeqIO.parse(path, file_type)
-    l = get_features(records)
+    l = get_features(records,process_function)
     np_arr = np.asarray(l,dtype='U')
     return np_arr
 

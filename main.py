@@ -2,7 +2,6 @@ from sklearn.preprocessing import LabelEncoder
 from functions import *
 from sklearn.model_selection import GridSearchCV
 import pickle
-from sklearn.ensemble import  VotingClassifier
 
 
 #input params
@@ -12,12 +11,12 @@ log_folder ="logs"
 n=1
 m=3
 
-tokens_labels = genebank_to_numpyarr(infile)
+data_array = genebank_to_numpyarr(infile, process_function_return_string)
 
 #Xy
-X = tokens_labels[:, 0]
+X = data_array[:, 0]
 le = LabelEncoder()
-y = le.fit_transform(tokens_labels[:, 1])
+y = le.fit_transform(data_array[:, 1])
 
 
 #Learning
