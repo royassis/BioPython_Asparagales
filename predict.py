@@ -1,5 +1,4 @@
 from functions import *
-from sklearn.preprocessing import LabelEncoder
 import argparse
 import pickle
 
@@ -21,5 +20,5 @@ with open(pickle_encoder, "rb") as input_file:
 y_pred = model.predict(X)
 y_pred = list(le.inverse_transform(y_pred))
 
-print(y_pred)
-
+with open("pred.txt", "w+") as outfile:
+     outfile.write("\n".join(y_pred))
