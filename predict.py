@@ -19,5 +19,7 @@ with open(pickle_encoder, "rb") as input_file:
      le = pickle.load(input_file)
 
 y_pred = model.predict(X)
-y_pred = le.inverse_transform(y_pred)
+y_pred = list(le.inverse_transform(y_pred))
+
+print(y_pred)
 

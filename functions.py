@@ -54,6 +54,13 @@ def genebank_to_numpyarr(path,process_function):
     np_arr = np.asarray(l,dtype='U')
     return np_arr
 
+def set_seq_features(infile, features):
+    file_type = infile.split(".")[1]
+    records = list(SeqIO.parse(infile, file_type))
+    for record,feature in zip(records,features):
+        record.annotations["pred"] = feature
+    return records
+
 ######Model######
 def timer(func):
    def func_wrapper(X,y,i):
