@@ -35,6 +35,10 @@ def process_function_return_string(record):
     label = record.annotations["taxonomy"][-5]
     return [str,label]
 
+def only_seqs(record):
+    str = record.seq._data
+    return str
+
 #Main iterations#
 def get_features(records,process_function):
     arr = []
@@ -49,8 +53,6 @@ def genebank_to_numpyarr(path,process_function):
     l = get_features(records,process_function)
     np_arr = np.asarray(l,dtype='U')
     return np_arr
-
-
 
 ######Model######
 def timer(func):

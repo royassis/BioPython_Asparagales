@@ -13,8 +13,9 @@ data_array = genebank_to_numpyarr(infile, process_function_return_string)
 
 #Xy
 X = data_array[:, 0]
+y = data_array[:, 1]
 le = LabelEncoder()
-y = le.fit_transform(data_array[:, 1])
+le.fit_transform(y)
 
 #Learning
 cv = CountVectorizer()
@@ -39,5 +40,6 @@ print("\n best_score: "+
 
 #Model persistance
 pickle.dump(model_transformation, open('model_transformation.joblib', "wb" ))
+pickle.dump(le, open('encoder.joblib', "wb" ))
 
 
