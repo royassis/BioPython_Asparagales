@@ -65,17 +65,3 @@ The model and the ordinal data encoder were saved to binary file using
 filename must be a .gb file 
 
 outputs a file names "pred.txt" with predictions
-
-
-
-
-
-
-
-
-
-
-
-
-
-
