@@ -66,7 +66,6 @@ filename must be a .gb file
 
 outputs a file names "pred.txt" with predictions
 
-asd
 
 
 
